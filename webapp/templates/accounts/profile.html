@@ -1,0 +1,26 @@
+{% extends "webapp/base.html" %}
+{% block content %}
+
+    <h2>User profile</h2>
+
+    <p><strong>Login:</strong> {{ user_object.username }}</p>
+    <p><strong>Name:</strong> {{ user_object.first_name }} {{ user_object.last_name }}</p>
+    <p><strong>Email:</strong> {{ user_object.email }}</p>
+
+    <a href="{% url 'accounts:profile_edit' user_object.pk %}" class="btn btn-warning">Edit profile</a>
+    <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary">Change password</a>
+
+    <hr>
+
+    <h3>Your reviews:</h3>
+
+    {% for review in user_object.review_set.all %}
+        <p>
+            <a href="{% url 'webapp:product_detail' review.product.pk %}">{{ review.product.name }}</a>
+            — {{ review.rating }}★
+        </p>
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+
+{% endblock %}

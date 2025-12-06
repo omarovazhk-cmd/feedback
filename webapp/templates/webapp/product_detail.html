@@ -1,0 +1,41 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ product.name }}</h1>
+
+    <div class="mb-3">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" style="max-width:400px;">
+        {% else %}
+            <img src="https://via.placeholder.com/400x300">
+        {% endif %}
+    </div>
+
+    <p><strong>Category:</strong> {{ product.get_category_display }}</p>
+    <p><strong>Description:</strong> {{ product.description }}</p>
+    <p><strong>Rating:</strong> {{ product.average_rating }}</p>
+
+    <a href="{% url 'webapp:product_update' product.pk %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'webapp:product_delete' product.pk %}" class="btn btn-danger">Delete</a>
+
+    <hr>
+
+    <h3>Reviews</h3>
+    <a href="{% url 'webapp:review_create' product.pk %}" class="btn btn-success mb-3">Add Review</a>
+
+    {% for review in reviews %}
+        <div class="border rounded p-3 mb-3">
+            <strong>{{ review.author.username }}</strong> – {{ review.rating }}
+            <p>{{ review.text }}</p>
+
+            <a href="{% url 'webapp:review_edit' review.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'webapp:review_delete' review.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+
+{% endblock %}

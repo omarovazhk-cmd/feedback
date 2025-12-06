@@ -1,0 +1,14 @@
+{% extends "webapp/base.html" %}
+
+{% block content %}
+    <h2>Delete review?</h2>
+
+    <p>{{ object.text }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger">Delete</button>
+        <a href="{% url 'webapp:product_detail' object.product.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+
+{% endblock %}

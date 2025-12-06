@@ -20,6 +20,18 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def average_rating(self):
+        reviews = self.review_set.filter(is_moderated=True)
+        if not reviews.exists():
+            return 0
+        return round(sum(r.rating for r in reviews) / reviews.count(), 1)
+
+    def delete(self, *args, **kwargs):
+        if self.image:
+            self.image.delete(save=False)
+        super().delete(*args, **kwargs)
+
 
 class Review(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)

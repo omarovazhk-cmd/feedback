@@ -1,0 +1,32 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Products</h1>
+
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" style="height:200px;object-fit:cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x200" class="card-img-top">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p>Rating: {{ product.average_rating }}</p>
+                        <a href="{% url 'webapp:product_detail' product.pk %}" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+
+        {% empty %}
+            <p>No products yet.</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}
